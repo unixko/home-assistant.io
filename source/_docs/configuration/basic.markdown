@@ -1,16 +1,12 @@
 ---
-layout: page
 title: "Setup basic information"
 description: "Setting up the basic info of Home Assistant."
-date: 2015-03-23 12:50
-sidebar: true
-comments: false
-sharing: true
-footer: true
 redirect_from: /getting-started/basic/
 ---
 
-By default, Home Assistant will try to detect your location from IP address geolocation. Home Assistant will automatically select a temperature unit and time zone based on this location. You can overwrite this by adding the following information to your `configuration.yaml`:
+As part of the default onboarding process, Home Assistant can detect your location from IP address geolocation. Home Assistant will automatically select a temperature unit and time zone based on this location. You may adjust this during onboarding, or afterwards at Configuration -> General. 
+
+If you prefer YAML, you can add the following information to your `configuration.yaml`:
 
 ```yaml
 homeassistant:
@@ -39,7 +35,11 @@ elevation:
   required: false
   type: integer
 unit_system:
-  description: "`metric` for Metric, `imperial` for Imperial."
+  description: "`metric` for Metric, `imperial` for Imperial. This also sets temperature_unit, Celsius for Metric and Fahrenheit for Imperial"
+  required: false
+  type: string
+temperature_unit:
+  description: "Override temperature unit set by unit_system. `C` for Celsius, `F` for Fahrenheit."
   required: false
   type: string
 time_zone:
@@ -67,3 +67,7 @@ whitelist_external_dirs:
   required: false
   type: list
 {% endconfiguration %}
+
+### Reload Core Service
+
+Home Assistant offers a service to reload the core configuration while Home Assistant is running called `homeassistant.reload_core_config`. This allows you to change any of the above sections and see it being applied without having to restart Home Assistant. To call this service, go to the "Service" tab under Developer Tools, select the `homeassistant.reload_core_config` service and click the "CALL SERVICE" button. Alternatively, you can press the "Reload Location & Customizations" button under Configuration > Server Control.

@@ -1,12 +1,6 @@
 ---
-layout: page
 title: "Autostart using systemd"
 description: "Instructions on how to setup Home Assistant to launch on boot using systemd."
-date: 2015-9-1 22:57
-sidebar: true
-comments: false
-sharing: true
-footer: true
 redirect_from: /getting-started/autostart-systemd/
 ---
 
@@ -25,7 +19,7 @@ A service file is needed to control Home Assistant with `systemd`. The template 
 - If unfamiliar with command-line text editors, `sudo nano -w [filename]` can be used with `[filename]` replaced with the full path to the file.  Ex. `sudo nano -w /etc/systemd/system/home-assistant@YOUR_USER.service`.  After text entered, press CTRL-X then press Y to save and exit.
 - If you're running Home Assistant in a Python virtual environment or a Docker container, please skip to the appropriate template listed below.
 
-```
+```text
 [Unit]
 Description=Home Assistant
 After=network-online.target
@@ -39,11 +33,11 @@ ExecStart=/usr/bin/hass
 WantedBy=multi-user.target
 ```
 
-### {% linkable_title Python virtual environment %}
+### Python virtual environment
 
 If you've setup Home Assistant in `virtualenv` following our [Python installation guide](/getting-started/installation-virtualenv/) or [manual installation guide for Raspberry Pi](/getting-started/installation-raspberry-pi/), the following template should work for you. If Home Assistant install is not located at `/srv/homeassistant`, please modify the `ExecStart=` line appropriately. `YOUR_USER` should be replaced by the user account that Home Assistant will run as (e.g `homeassistant`).
 
-```
+```text
 [Unit]
 Description=Home Assistant
 After=network-online.target
@@ -57,11 +51,11 @@ ExecStart=/srv/homeassistant/bin/hass -c "/home/%i/.homeassistant"
 WantedBy=multi-user.target
 ```
 
-### {% linkable_title Docker %}
+### Docker
 
 If you want to use Docker, the following template should work for you.
 
-```
+```text
 [Unit]
 Description=Home Assistant
 Requires=docker.service
@@ -78,29 +72,29 @@ ExecStopPost=/usr/bin/docker rm -f home-assistant-%i
 WantedBy=multi-user.target
 ```
 
-### {% linkable_title Next Steps %}
+### Next Steps
 
 You need to reload `systemd` to make the daemon aware of the new configuration.
 
 ```bash
-$ sudo systemctl --system daemon-reload
+sudo systemctl --system daemon-reload
 ```
 
 To have Home Assistant start automatically at boot, enable the service.
 
 ```bash
-$ sudo systemctl enable home-assistant@YOUR_USER
+sudo systemctl enable home-assistant@YOUR_USER
 ```
 
 To disable the automatic start, use this command.
 
 ```bash
-$ sudo systemctl disable home-assistant@YOUR_USER
+sudo systemctl disable home-assistant@YOUR_USER
 ```
 
 To start Home Assistant now, use this command.
 ```bash
-$ sudo systemctl start home-assistant@YOUR_USER
+sudo systemctl start home-assistant@YOUR_USER
 ```
 
 You can also substitute the `start` above with `stop` to stop Home Assistant, `restart` to restart Home Assistant, and 'status' to see a brief status report as seen below.
@@ -120,25 +114,25 @@ $ sudo systemctl status home-assistant@YOUR_USER
 To get Home Assistant's logging output, simple use `journalctl`.
 
 ```bash
-$ sudo journalctl -f -u home-assistant@YOUR_USER
+sudo journalctl -f -u home-assistant@YOUR_USER
 ```
 
 Because the log can scroll quite quickly, you can select to view only the error lines:
 ```bash
-$ sudo journalctl -f -u home-assistant@YOUR_USER | grep -i 'error'
+sudo journalctl -f -u home-assistant@YOUR_USER | grep -i 'error'
 ```
 
 When working on Home Assistant, you can easily restart the system and then watch the log output by combining the above commands using `&&`
 
 ```bash
-$ sudo systemctl restart home-assistant@YOUR_USER && sudo journalctl -f -u home-assistant@YOUR_USER
+sudo systemctl restart home-assistant@YOUR_USER && sudo journalctl -f -u home-assistant@YOUR_USER
 ```
 
-### {% linkable_title Automatically restarting Home Assistant on failure %}
+### Automatically restarting Home Assistant on failure
 
 If you want to restart the Home Assistant service automatically after a crash, add the following lines to the `[Service]` section of your unit file:
 
-```
+```text
 Restart=on-failure
 RestartSec=5s
 ```

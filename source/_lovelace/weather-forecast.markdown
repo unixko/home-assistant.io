@@ -1,16 +1,10 @@
 ---
-layout: page
 title: "Weather Forecast Card"
 sidebar_label: Weather Forecast
-description: "The Weather card allows you a visual card to display the weather."
-date: 2018-07-01 10:28 +00:00
-sidebar: true
-comments: false
-sharing: true
-footer: true
+description: "The Weather Forecast card displays the weather. Very useful to include on interfaces that people display on the wall."
 ---
 
-The weather forecast is a card to display the weather. Very useful to include on interfaces that people display on the wall.
+The Weather Forecast card displays the weather. Very useful to include on interfaces that people display on the wall.
 
 <p class='img'>
 <img src='/images/lovelace/lovelace_weather.png' alt='Screenshot of the weather card'>
@@ -31,17 +25,28 @@ name:
   description: Overwrites the friendly name.
   type: string
   default: Entity Name
+show_forecast:
+  required: false
+  description: Show next hours/days forecast.
+  type: boolean
+  default: true
+theme:
+  required: false
+  description: "Set to any theme within `themes.yaml`"
+  type: string
 {% endconfiguration %}
 
-{% linkable_title Example %}
+Example
 
 ```yaml
 type: weather-forecast
 entity: weather.dark_sky
 ```
 
-<p class="note">
+<div class="note">
+
   This card works only with platforms that define a `weather` entity.
   
-  E.g., it works with [Dark Sky](/components/weather.darksky/) but not [Dark Sky Sensor](/components/sensor.darksky/)
-</p>
+  E.g., it works with [Dark Sky](/integrations/weather.darksky/) but not [Dark Sky Sensor](/integrations/darksky)
+
+</div>
